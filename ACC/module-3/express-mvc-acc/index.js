@@ -9,6 +9,7 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const nodemailer = require("nodemailer");
 const dbConnect = require("./utils/dbConnect.js");
 const toolsRoute = require('./routes/v1/tools.route.js');
+const viewCount = require("./middleware/viewCount.js");
 
 app.use(cors());
 app.use(express.json());
@@ -16,7 +17,21 @@ app.use(express.json());
 
 // const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.roc0q.mongodb.net/?retryWrites=true&w=majority`;
 // const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+ 
+// module.exports.limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, // 15 minutes
+//   max: 2, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+//   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+//   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+// })
 
+// Apply the rate limiting middleware to all requests
+// app.use(limiter)
+
+/**
+ * Application level viewCount global middleware 
+ * It will increase when any user views any route*/
+// app.use(viewCount); 
 dbConnect();
 
 app.use("/api/v1/tools", toolsRoute);

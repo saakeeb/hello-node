@@ -1,4 +1,7 @@
 const express = require('express');
+const toolsControllers = require('../../controllers/tools.controllers.js');
+const limiter = require('../../middleware/limiter.js');
+const viewCount = require('../../middleware/viewCount.js');
 
 const router = express.Router();
 
@@ -27,9 +30,7 @@ router
    * @apiError (Unauthorized 401)  Unauthorized  Only authenticated users can access the data
    * @apiError (Forbidden 403)     Forbidden     Only admins can access the data
    */
-    .get((req, res) => {
-        res.send('Tools found in route');
-    })
+    .get(toolsControllers.getAllTools)
     /**
    * @api {post} /tools save a tool
    * @apiDescription Get all the tools
@@ -45,8 +46,12 @@ router
    * @apiError (Unauthorized 401)  Unauthorized  Only authenticated users can access the data
    * @apiError (Forbidden 403)     Forbidden     Only admins can access the data
    */
-    .post((req, res) => {
-        res.send('Tools added');
-    })
+    .post(toolsControllers.saveATool);
+
+    /**
+ * Router level middleware 
+ * when we want to count specific url thamn we will use this
+ * */
+router.route("/:id").get(viewCount, limiter, toolsControllers.getToolDetails);
 
 module.exports = router;
