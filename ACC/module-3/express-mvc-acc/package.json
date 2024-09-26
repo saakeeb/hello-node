@@ -18,7 +18,7 @@
     "express-rate-limit": "^6.6.0",
     "jsonwebtoken": "^9.0.0",
     "mongodb": "^4.6.0",
-    "nodemailer": "^6.7.8",
+    "nodemailer": "^6.9.9",
     "stripe": "^10.3.0"
   },
   "description": ""
